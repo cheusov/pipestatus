@@ -1,0 +1,65 @@
+#!/bin/sh
+
+ret1 () {
+    return 1
+}
+
+ret7 () {
+    return 7
+}
+
+ret55 () {
+    return 55
+}
+
+. pipestatus
+
+showvars (){
+    echo '$?'=$?
+    echo pipesize=$pipesize
+    i=1
+    while test $i -le $pipesize; do
+	eval echo 'pipestatus_\$i=$pipestatus_'$i
+	i=$(($i+1))
+    done
+}
+
+showrunpipe (){
+    echo $@ | sed "s/|/'|'/g"
+}
+
+run (){
+    printf "running runpipe "
+    showrunpipe "$@"
+    runpipe "$@"
+    showvars
+    echo ''
+}
+
+run0 (){
+    printf "running0 runpipe0 "
+    showrunpipe "$@"
+    runpipe0 "$@"
+    showvars
+    echo ''
+}
+
+run_re (){
+    printf "running_re runpipe_re "
+    re=$1
+    printf "'%s' " "$re"
+    shift
+    showrunpipe "$@"
+    runpipe_re "$re" "$@"
+    showvars
+    echo ''
+}
+
+run true '|' true '|' true
+run ret1 '|' ret55 '|' ret7
+
+run0 ret1 '|' ret55 '|' true
+run0 true '|' true '|' true
+
+run_re '. 0 0' ret1 '|' true '|' true
+run_re '0 7 0' true '|' true '|' true
