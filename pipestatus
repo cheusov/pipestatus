@@ -1,17 +1,24 @@
 # -*- mode: sh; -*-
 
 #
-# Set of shell functions for running pipe and chexking
-# exit statuses of ALL programs, not only last one
+# Public domain
 #
+# Written by Aleksey Cheusov <vle@gmx.net>
+# based on the code from FAQ of comp.unix.shell newsgroup
 #
+# Set of shell functions for running pipe and checking
+# exit statuses of ALL programs, not only last one.
 #
+# Provided functions:
+#  runpipe, runpipe0, runpipe_re,
+#  check_status, check_status0, check_status_re,
 #
+# See pipestatus_demo for documentation ;-)
 #
+# Version 0.1
 #
-#
-#
-#
+
+
 
 # run pipe and set pipestatus_1, pipestatus_2, ... and pipesize variables
 # Example: runpipe_base prog1 arg11 arg12 '|' prog2 arg21 arg22 '|' prog3
@@ -106,6 +113,7 @@ check_status_re (){
 	__pipestatus_ret=$?
     fi
 
+    # egrep not found?
     case $__pipestatus_ret in
 	0|1)
 	    ;;
