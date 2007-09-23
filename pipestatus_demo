@@ -21,7 +21,7 @@ showvars (){
     echo pipesize=$pipesize
     i=1
     while test $i -le $pipesize; do
-	eval echo 'pipestatus_\$i=$pipestatus_'$i
+	eval echo 'pipestatus_$i=$pipestatus_'$i
 	i=$(($i+1))
     done
 }
