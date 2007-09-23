@@ -39,7 +39,7 @@ run (){
 }
 
 run0 (){
-    printf "running0 runpipe0 "
+    printf "running runpipe0 "
     showrunpipe "$@"
     runpipe0 "$@"
     showvars
@@ -47,7 +47,7 @@ run0 (){
 }
 
 run_re (){
-    printf "running_re runpipe_re "
+    printf "running runpipe_re "
     re=$1
     printf "'%s' " "$re"
     shift
