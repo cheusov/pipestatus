@@ -1,35 +1,117 @@
 # -*- mode: sh; -*-
 
-runpipe (){
-    j=1
-    while eval "\${pipestatus_$j+:} false"; do
-        unset pipestatus_$j
-        j=$(($j+1))
+#pipestatus_save_vars (){
+#    while [ $# -ne 0 ]; do
+#	eval "__pipestatus_$1=\$$1"
+#	shift
+#    done
+#}
+
+#pipestatus_restore_vars (){
+#    while [ $# -ne 0 ]; do
+#	eval "$1=\$__pipestatus_$1"
+#	shift
+#    done
+#}
+
+runpipe_base (){
+    # unset pipestatus_[0-9]+ variables
+    __pipestatus_j=1
+    while eval "\${pipestatus_$__pipestatus_j+:} false"; do
+        unset pipestatus_$__pipestatus_j
+        __pipestatus_j=$(($__pipestatus_j+1))
     done
-    j=1 com= k=1 l=
-    for a; do
-        if [ "x$a" = 'x|' ]; then
-            com="$com { $l "'3>&-
-                         echo "pipestatus_'$j'=$?" >&3
-                       } 4>&- |'
-            j=$(($j+1)) l=
+
+    # whole command
+    __pipestatus_com=
+
+    # token count
+    __pipestatus_k=1
+
+    #
+    __pipestatus_stat_dir=/tmp/pipestatus.$$
+    mkdir -m 700 $__pipestatus_stat_dir || exit 1
+    __pipestatus_stat_fn=$__pipestatus_stat_dir/status
+
+    # program in pipe (between |)
+    __pipestatus_l=
+
+    # counter
+    __pipestatus_j=1
+    for __pipestatus_a; do
+        if [ "_$__pipestatus_a" = '_|' ]; then
+            __pipestatus_com="$__pipestatus_com { $__pipestatus_l "'; echo "pipestatus_'$__pipestatus_j'=$?" >>'${__pipestatus_stat_fn}'; } |
+'
+            __pipestatus_j=$(($__pipestatus_j+1))
+	    __pipestatus_l=
         else
-            l="$l \"\$$k\""
+            __pipestatus_l="$__pipestatus_l \"\$$__pipestatus_k\""
         fi
-        k=$(($k+1))
+        __pipestatus_k=$(($__pipestatus_k+1))
     done
-    com="$com $l"' 3>&- >&4 4>&-
-                    echo "pipestatus_'$j'=$?"'
+    __pipestatus_com="$__pipestatus_com $__pipestatus_l"'; echo "pipestatus_'"$__pipestatus_j"'=$?" >>'"${__pipestatus_stat_fn}"
 
-    echo "com=$com"
+    eval "$__pipestatus_com"
+    . $__pipestatus_stat_fn
 
-    exec 4>&1
-    eval "$(exec 3>&1; eval "$com")"
-    exec 4>&-
-    j=1
-    while eval "\${pipestatus_$j+:} false"; do
-        eval "[ \$pipestatus_$j -eq 0 ]" || return 1
-        j=$(($j+1))
-    done
+    rm -rf $__pipestatus_stat_dir
+    pipesize=$__pipestatus_j
+
     return 0
+}
+
+check_status0 (){
+    __pipestatus_j=1
+    while eval "\${pipestatus_$__pipestatus_j+:} false"; do
+	eval "[ \$pipestatus_$__pipestatus_j -eq 0 ]" || return 1
+	__pipestatus_j=$(($__pipestatus_j+1))
+    done
+
+    return 0
+}
+
+runpipe0 (){
+    runpipe_base "$@"
+    check_status0
+}
+
+check_status_re (){
+    __pipestatus_re=`echo $1 | sed 's/[.]/[0-9]+/g'`
+    __pipestatus_j=1
+    __pipestatus_ps=
+    while eval "\${pipestatus_$__pipestatus_j+:} false"; do
+	eval '__pipestatus_ps="$__pipestatus_ps ${pipestatus_'$__pipestatus_j'}"'
+	__pipestatus_j=$(($__pipestatus_j+1))
+    done
+
+    # trick for set -e
+    if echo "$__pipestatus_ps" | egrep "^ $re"'$' > /dev/null; then
+	__pipestatus_ret=$?
+    else
+	__pipestatus_ret=$?
+    fi
+
+    return $__pipestatus_ret
+}
+
+# match all statuses with the pattern
+# example: runpipe_re '0 . 0' prog1 prog2 prog3
+# . means "any status"
+runpipe_re (){
+    __pipestatus_re=$1
+    shift
+
+    runpipe_base "$@"
+    check_status_re $__pipestatus_re
+}
+
+# return exit code of the last program in pipe
+check_status (){
+    eval return '$pipestatus_'${pipesize}
+}
+
+# similar to plain pipe but set 'pipestatus_XX' and 'pipesize' variables
+runpipe (){
+    runpipe_base "$@"
+    check_status
 }
