@@ -1,19 +1,20 @@
 # -*- mode: sh; -*-
 
-#pipestatus_save_vars (){
-#    while [ $# -ne 0 ]; do
-#	eval "__pipestatus_$1=\$$1"
-#	shift
-#    done
-#}
+#
+# Set of shell functions for running pipe and chexking
+# exit statuses of ALL programs, not only last one
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
-#pipestatus_restore_vars (){
-#    while [ $# -ne 0 ]; do
-#	eval "$1=\$__pipestatus_$1"
-#	shift
-#    done
-#}
-
+# run pipe and set pipestatus_1, pipestatus_2, ... and pipesize variables
+# Example: runpipe_base prog1 arg11 arg12 '|' prog2 arg21 arg22 '|' prog3
 runpipe_base (){
     # unset pipestatus_[0-9]+ variables
     __pipestatus_j=1
@@ -28,7 +29,8 @@ runpipe_base (){
     # token count
     __pipestatus_k=1
 
-    #
+    # >&3, >&4 etc. do not work :(
+    # so, I use temporary file
     __pipestatus_stat_dir=/tmp/pipestatus.$$
     mkdir -m 700 $__pipestatus_stat_dir || exit 1
     __pipestatus_stat_fn=$__pipestatus_stat_dir/status
@@ -38,6 +40,8 @@ runpipe_base (){
 
     # counter
     __pipestatus_j=1
+
+    # generating whole command
     for __pipestatus_a; do
         if [ "_$__pipestatus_a" = '_|' ]; then
             __pipestatus_com="$__pipestatus_com { $__pipestatus_l "'; echo "pipestatus_'$__pipestatus_j'=$?" >>'${__pipestatus_stat_fn}'; } |
@@ -51,15 +55,22 @@ runpipe_base (){
     done
     __pipestatus_com="$__pipestatus_com $__pipestatus_l"'; echo "pipestatus_'"$__pipestatus_j"'=$?" >>'"${__pipestatus_stat_fn}"
 
-    eval "$__pipestatus_com"
+    # trick for set -e
+    eval "$__pipestatus_com" || true
+
+    # setting pipestatus_XX variables
     . $__pipestatus_stat_fn
 
-    rm -rf $__pipestatus_stat_dir
+    #
     pipesize=$__pipestatus_j
+
+    #
+    rm -rf $__pipestatus_stat_dir
 
     return 0
 }
 
+# returns zero exit status if ALL progs in pipe return zero
 check_status0 (){
     __pipestatus_j=1
     while eval "\${pipestatus_$__pipestatus_j+:} false"; do
@@ -70,11 +81,15 @@ check_status0 (){
     return 0
 }
 
+# returns zero exit status if ALL progs in pipe return zero
 runpipe0 (){
     runpipe_base "$@"
     check_status0
 }
 
+# match all statuses with the pattern
+# example: check_status_re '0 . 0'
+# . means "any status"
 check_status_re (){
     __pipestatus_re=`echo $1 | sed 's/[.]/[0-9]+/g'`
     __pipestatus_j=1
@@ -91,11 +106,18 @@ check_status_re (){
 	__pipestatus_ret=$?
     fi
 
+    case $__pipestatus_ret in
+	0|1)
+	    ;;
+	*)
+	    exit 2; # fatal error with egrep
+    esac
+
     return $__pipestatus_ret
 }
 
 # match all statuses with the pattern
-# example: runpipe_re '0 . 0' prog1 prog2 prog3
+# example: runpipe_re '0 . 0' prog1 '|' prog2 '|' prog3
 # . means "any status"
 runpipe_re (){
     __pipestatus_re=$1
