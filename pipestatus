@@ -36,12 +36,6 @@ runpipe_base (){
     # token count
     __pipestatus_k=1
 
-    # >&3, >&4 etc. do not work :(
-    # so, I use temporary file
-    __pipestatus_stat_dir=/tmp/pipestatus.$$
-    mkdir -m 700 $__pipestatus_stat_dir || exit 1
-    __pipestatus_stat_fn=$__pipestatus_stat_dir/status
-
     # program in pipe (between |)
     __pipestatus_l=
 
@@ -51,7 +45,9 @@ runpipe_base (){
     # generating whole command
     for __pipestatus_a; do
         if [ "_$__pipestatus_a" = '_|' ]; then
-            __pipestatus_com="$__pipestatus_com { $__pipestatus_l "'; echo "pipestatus_'$__pipestatus_j'=$?" >>'${__pipestatus_stat_fn}'; } |
+            __pipestatus_com="$__pipestatus_com { $__pipestatus_l 3>&-"'
+   echo "pipestatus_'$__pipestatus_j'=$?" 1>&3
+} 4>&- |
 '
             __pipestatus_j=$(($__pipestatus_j+1))
 	    __pipestatus_l=
@@ -60,19 +56,16 @@ runpipe_base (){
         fi
         __pipestatus_k=$(($__pipestatus_k+1))
     done
-    __pipestatus_com="$__pipestatus_com $__pipestatus_l"'; echo "pipestatus_'"$__pipestatus_j"'=$?" >>'"${__pipestatus_stat_fn}"
+    __pipestatus_com="$__pipestatus_com $__pipestatus_l 3>&- 1>&4 4>&-"'
+   echo "pipestatus_'"$__pipestatus_j"'=$?"'
 
-    # trick for set -e
-    eval "$__pipestatus_com" || true
-
-    # setting pipestatus_XX variables
-    . $__pipestatus_stat_fn
+    # '|| true' - trick for 'set -e'
+    exec 4>&1 
+    eval "$(exec 3>&1; eval "$__pipestatus_com")" || true
+    exec 4>&- 
 
     #
     pipesize=$__pipestatus_j
-
-    #
-    rm -rf $__pipestatus_stat_dir
 
     return 0
 }
