@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# by Aleksey Cheusov <vle@gmx.net>
+
 . pipestatus
 
 ret1 () {
