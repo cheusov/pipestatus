@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. pipestatus
+
 ret1 () {
     return 1
 }
@@ -11,8 +13,6 @@ ret7 () {
 ret55 () {
     return 55
 }
-
-. pipestatus
 
 showvars (){
     echo '$?'=$?
