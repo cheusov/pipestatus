@@ -9,19 +9,14 @@
 # Set of shell functions for running pipe and checking
 # exit statuses of ALL programs, not only last one.
 #
-# Provided functions:
-#  runpipe, runpipe0, runpipe_re,
-#  check_status, check_status0, check_status_re,
-#
 # See pipestatus_demo for a documentation ;-)
 #
 # Version 0.2.0
 #
 
-
-
 # run pipe and set pipestatus_1, pipestatus_2, ... and pipesize variables
 # Example: runpipe_base prog1 arg11 arg12 '|' prog2 arg21 arg22 '|' prog3
+# Always return zero exit status
 runpipe_base (){
     # unset pipestatus_[0-9]+ variables
     __pipestatus_j=1
