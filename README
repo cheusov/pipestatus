@@ -1,1 +1,49 @@
-See pipestatus file
+============================================================
+
+pipestatus - source file for POSIX shell that allows
+to obtain an exit status of every program in a pipe.
+
+Home page. http://mova.org/~cheusov/pub/pipestatus/
+
+============================================================
+
+                        MOTIVATION
+
+While programming in shell we often run pipes like this
+
+    prog1 args1 | prog2 args2 | ... | progN argsN
+
+Unfortunately POSIX says that exit status of the entire
+pipe is the exit status of LAST program in it, i.e.
+progN in our example. That is, exit status of all other
+programs in pipe is silently ignored.
+IMHO this is VEEEERY bad.
+
+Solution - to check exit status of any/all programs in pipe
+when it is necessary.
+
+And this is exactly what 'pipetatus' actually does.
+And this is why I packaged and publish this code.
+
+============================================================
+
+                         INSTALL
+
+Just copy pipestatus to the place PATH variable points to
+
+============================================================
+
+                          USAGE
+
+============================================================
+
+                       AUTHORS/FEEDBACK
+
+Initial idea and sources was obtained
+from FAQ of comp.unix.shell news group,
+later the code was modified and improved
+by Aleksey Cheusov <vle@gmx.net>
+
+Send bug reports, suggestions, questions etc. to me.
+
+============================================================
