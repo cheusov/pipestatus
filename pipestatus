@@ -11,7 +11,7 @@
 #
 # See pipestatus_demo for a documentation ;-)
 #
-# Version 0.2.0
+# Version 0.3.0
 #
 
 # run pipe and set pipestatus_1, pipestatus_2, ... and pipesize variables
