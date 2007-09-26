@@ -33,7 +33,44 @@ Just copy pipestatus to the place PATH variable points to
 
 ============================================================
 
-                          USAGE
+                      DOCUMENTATION
+
+Usage:
+  . pipestatus 
+
+Provided functions:
+ runpipe_base, runpipe, runpipe0, runpipe_re,
+ check_status, check_status0, check_status_re
+
+Usage for 'runpipe' functions:
+   runpipe_base         prog1 [args1] '|' prog2 [args2] '|' ...
+   runpipe              prog1 [args1] '|' prog2 [args2] '|' ...
+   runpipe0             prog1 [args1] '|' prog2 [args2] '|' ...
+   runpipe_re status_re prog1 [args1] '|' prog2 [args2] '|' ...
+
+All runpipeX functions
+  set 'pipestatus_1' variable to the exit status of prog1,
+  set 'pipestatus_2' variable to the exit status of prog2 etc.
+They also set 'pipesize' variable to a number of programs in pipe.
+
+ runpipe_base - always sets $? to zero
+
+ runpipe - sets $? to the exit status of the last program
+           just like normal pipes do
+
+ runpipe0 - sets $? to zero if ALL programs in pipe
+            returned zero exit status
+
+ runpipe_re - sets $? to zero if concatenated statuses of
+            all programs in pipe correspond to 'status_re' expression
+
+     status_re - allowed exit statuses for pipe.
+              Example1: ". 0 0". Here . means that prog1
+                  may exit with ANY status, prog2 with status zero,
+                  and prog3 with status zero too.
+              Example2: "0 0 0 [01]". Here [01] means that last program
+                  may exit with status 0 or 1,
+                  while first three - with status zero.
 
 ============================================================
 
@@ -44,6 +81,6 @@ from FAQ of comp.unix.shell news group,
 later the code was modified and improved
 by Aleksey Cheusov <vle@gmx.net>
 
-Send bug reports, suggestions, questions etc. to me.
+Send bug reports, suggestions, questions etc. directly to me.
 
 ============================================================
