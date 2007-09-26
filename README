@@ -74,6 +74,14 @@ They also set 'pipesize' variable to a number of programs in pipe.
                   may exit with status 0 or 1,
                   while first three - with status zero.
 
+Usage for check_statusX functions:
+   check_status
+   check_status0
+   check_status_re status_re
+
+They set $? according to pipestatus_1, pipestatus_2 etc. variables
+(probably set by runpipeX functions)
+
 ============================================================
 
                        AUTHORS/FEEDBACK
