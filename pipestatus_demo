@@ -2,7 +2,7 @@
 
 # by Aleksey Cheusov <vle@gmx.net>
 
-. pipestatus
+. ./pipestatus
 
 ret1 () {
     return 1
@@ -31,7 +31,7 @@ showrunpipe (){
 }
 
 run (){
-    printf "running runpipe "
+    printf "running\n     runpipe "
     showrunpipe "$@"
     runpipe "$@"
     showvars
@@ -39,7 +39,7 @@ run (){
 }
 
 run0 (){
-    printf "running runpipe0 "
+    printf "running\n     runpipe0 "
     showrunpipe "$@"
     runpipe0 "$@"
     showvars
@@ -47,7 +47,7 @@ run0 (){
 }
 
 run_re (){
-    printf "running runpipe_re "
+    printf "running\n     runpipe_re "
     re=$1
     printf "'%s' " "$re"
     shift
