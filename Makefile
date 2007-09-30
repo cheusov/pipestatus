@@ -1,3 +1,5 @@
+SH=/bin/sh
+
 all:
 	@echo Nothing to build
 
@@ -34,3 +36,7 @@ ChangeLog:
 	      -e 's,author  <[^>]*,Aleksey Cheusov <vle@gmx.net,g' \
               -e 's,\(.*\)<\([^@<>]\+\)@\([^@<>]\+\)>\(.*\),\1<\2 at \3}\4,g' \
 	> ChangeLog;)
+
+.PHONY: test
+test:
+	$(SH) ./selftest
