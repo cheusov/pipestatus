@@ -27,7 +27,7 @@ ret7 (){
     return 7 # equal to 'false'
 }
 
-#
+# runpipe
 runpipe ret7 '|' ret5 '|' ret1 '|' ret0
 test $? -eq 0; assert "test1"
 test "$pipestatus_1" -eq '7'; assert "test2"
@@ -42,7 +42,7 @@ test "$pipestatus_1" -eq '0'; assert "test8"
 test "$pipestatus_2" -eq '0'; assert "test9"
 test "$pipesize" -eq '2'; assert "test10"
 
-#
+# runpipe0
 pipestatus_clear_all_vars
 runpipe0 ret1 '|' ret7  '|' ret5
 test $? -ne 0; assert "test11"
@@ -63,7 +63,7 @@ test "$pipestatus_1" -eq '0'; assert "test18"
 test "$pipestatus_2" -eq '0'; assert "test19"
 test "$pipesize" -eq '2'; assert "test20"
 
-#
+# runpipe_re
 runpipe_re '1 7 [571]' ret1 '|' ret7  '|' ret5
 test $? -ne 0; assert "test21"
 test "$pipestatus_1" -eq '1'; assert "test22"
@@ -84,3 +84,23 @@ test "$pipestatus_1" -eq '1'; assert "test32"
 test "$pipestatus_2" -eq '7'; assert "test33"
 test "$pipestatus_3" -eq '5'; assert "test34"
 test "$pipesize" -eq '3'; assert "test35"
+
+#  reentrant?
+ret_1_5 () {
+    runpipe ret1 \| ret5
+}
+
+ret_1_1 () {
+    runpipe ret1 \| ret1
+}
+
+ret_5_7_0 () {
+    runpipe ret5 \| ret7 \| true
+}
+
+runpipe 'ret_1_5' '|' 'ret_1_1' '|' 'ret_5_7_0'
+test $? -eq 0; assert "test36"
+test "$pipestatus_1" -eq '5'; assert "test37"
+test "$pipestatus_2" -eq '1'; assert "test38"
+test "$pipestatus_3" -eq '0'; assert "test39"
+test "$pipesize" -eq '3'; assert "test41"
