@@ -14,16 +14,25 @@
 # Version 0.3.0
 #
 
-# run pipe and set pipestatus_1, pipestatus_2, ... and pipesize variables
-# Example: runpipe_base prog1 arg11 arg12 '|' prog2 arg21 arg22 '|' prog3
-# Always return zero exit status
-runpipe_base (){
+# unset variables
+pipestatus_clear_all_vars (){
+    #
+    unset pipesize
+
     # unset pipestatus_[0-9]+ variables
     __pipestatus_j=1
     while eval "\${pipestatus_$__pipestatus_j+:} false"; do
         unset pipestatus_$__pipestatus_j
         __pipestatus_j=$(($__pipestatus_j+1))
     done
+}
+
+# run pipe and set pipestatus_1, pipestatus_2, ... and pipesize variables
+# Example: runpipe_base prog1 arg11 arg12 '|' prog2 arg21 arg22 '|' prog3
+# Always return zero exit status
+runpipe_base (){
+    #
+    pipestatus_clear_all_vars
 
     # whole command
     __pipestatus_com=
