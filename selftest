@@ -1,0 +1,79 @@
+# -*- mode: sh; -*-
+
+. ./pipestatus
+
+assert (){
+    if test $? -eq 0; then
+	return 0
+    else
+	echo "Faild $@" 1>&2
+	exit 5
+    fi
+}
+
+ret0 (){
+    return 0 # equal to 'true'
+}
+
+ret1 (){
+    return 1 # equal to 'false'
+}
+
+ret5 (){
+    return 5 # equal to 'false'
+}
+
+ret7 (){
+    return 7 # equal to 'false'
+}
+
+#
+runpipe ret7 '|' ret5 '|' ret1 '|' ret0
+test $? -eq 0; assert "test1"
+test "$pipestatus_1" -eq '7'; assert "test2"
+test "$pipestatus_2" -eq '5'; assert "test3"
+test "$pipestatus_3" -eq '1'; assert "test4"
+test "$pipestatus_4" -eq '0'; assert "test5"
+test "$pipesize" -eq '4'; assert "test6"
+
+runpipe ret0 '|' ret0
+test $? -eq 0; assert "test7"
+test "$pipestatus_1" -eq '0'; assert "test8"
+test "$pipestatus_2" -eq '0'; assert "test9"
+test "$pipesize" -eq '2'; assert "test10"
+
+#
+pipestatus_clear_all_vars
+runpipe0 ret1 '|' ret7  '|' ret5
+test $? -ne 0; assert "test11"
+test "$pipestatus_1" -eq '1'; assert "test12"
+test "$pipestatus_2" -eq '7'; assert "test13"
+test "$pipestatus_3" -eq '5'; assert "test14"
+test "$pipesize" -eq '3'; assert "test12"
+
+runpipe0 ret7  '|' ret0
+test $? -ne 0; assert "test13"
+test "$pipestatus_1" -eq '7'; assert "test14"
+test "$pipestatus_2" -eq '0'; assert "test15"
+test "$pipesize" -eq '2'; assert "test16"
+
+runpipe0 ret0 '|' ret0
+test $? -eq 0; assert "test17"
+test "$pipestatus_1" -eq '0'; assert "test18"
+test "$pipestatus_2" -eq '0'; assert "test19"
+test "$pipesize" -eq '2'; assert "test20"
+
+#
+runpipe_re '1 7 [571]' ret1 '|' ret7  '|' ret5
+test $? -ne 0; assert "test21"
+test "$pipestatus_1" -eq '1'; assert "test22"
+test "$pipestatus_2" -eq '7'; assert "test23"
+test "$pipestatus_3" -eq '5'; assert "test24"
+test "$pipesize" -eq '3'; assert "test25"
+
+runpipe_re '1 7 [571]' ret1 '|' ret7  '|' ret5
+test $? -ne 0; assert "test21"
+test "$pipestatus_1" -eq '1'; assert "test22"
+test "$pipestatus_2" -eq '7'; assert "test23"
+test "$pipestatus_3" -eq '5'; assert "test24"
+test "$pipesize" -eq '3'; assert "test25"
