@@ -29,9 +29,16 @@ And this is why I packaged and publish this code.
 
                          INSTALL
 
+There is nothing to be built in 'pipestatus'.
 Just copy pipestatus to the place PATH variable points to
 You can also run ./pipestatus_demo for demo version and
-sample of usage.
+sample of usage. ./selftest is also a good example.
+
+If 
+
+    make test
+
+command fails on you system, please let me now.
 
 ============================================================
 
