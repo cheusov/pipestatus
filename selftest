@@ -72,8 +72,15 @@ test "$pipestatus_3" -eq '5'; assert "test24"
 test "$pipesize" -eq '3'; assert "test25"
 
 runpipe_re '1 7 [571]' ret1 '|' ret7  '|' ret5
-test $? -ne 0; assert "test21"
-test "$pipestatus_1" -eq '1'; assert "test22"
-test "$pipestatus_2" -eq '7'; assert "test23"
-test "$pipestatus_3" -eq '5'; assert "test24"
-test "$pipesize" -eq '3'; assert "test25"
+test $? -ne 0; assert "test26"
+test "$pipestatus_1" -eq '1'; assert "test27"
+test "$pipestatus_2" -eq '7'; assert "test28"
+test "$pipestatus_3" -eq '5'; assert "test29"
+test "$pipesize" -eq '3'; assert "test30"
+
+runpipe_re '. . [51]' ret1 '|' ret7  '|' ret5
+test $? -ne 0; assert "test31"
+test "$pipestatus_1" -eq '1'; assert "test32"
+test "$pipestatus_2" -eq '7'; assert "test33"
+test "$pipestatus_3" -eq '5'; assert "test34"
+test "$pipesize" -eq '3'; assert "test35"
