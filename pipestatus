@@ -129,7 +129,7 @@ runpipe0 (){
 # example: check_status_re '0 . 0'
 # . means "any status"
 check_status_re (){
-    __pipestatus_re=`echo $1 | sed 's/[.]/[0-9]+/g'`
+    __pipestatus_re=`echo $1 | sed 's/[.]/[0-9][0-9]*/g'`
     __pipestatus_j=1
     __pipestatus_ps=
     while [ "$__pipestatus_j" -le "$pipesize" ]; do
@@ -141,7 +141,7 @@ check_status_re (){
 #    echo '__pipestatus_ps='$__pipestatus_ps 1>&2
 
     # trick for set -e
-    if echo "$__pipestatus_ps" | egrep "^ $__pipestatus_re"'$' > /dev/null; then
+    if echo "$__pipestatus_ps" | grep "^ $__pipestatus_re"'$' > /dev/null; then
 	__pipestatus_ret=$?
     else
 	__pipestatus_ret=$?
