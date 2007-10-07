@@ -97,6 +97,14 @@ runpipe_base (){
     #
     pipesize=$__pipestatus_j
 
+    # pipestatus_all
+    __pipestatus_j=2
+    pipestatus_all=$pipestatus_1
+    while [ "$__pipestatus_j" -le "$pipesize" 2>/dev/null ]; do
+	eval "pipestatus_all=\"$pipestatus_all \$pipestatus_$__pipestatus_j\""
+        __pipestatus_j=$(($__pipestatus_j+1))
+    done
+
     return 0
 }
 
