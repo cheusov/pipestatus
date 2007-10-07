@@ -14,15 +14,22 @@
 
 # unset variables
 pipestatus_clear_all_vars (){
-    #
-    unset pipesize
+    # trick for 'set -e'
+    unset pipesize || true
 
+#    echo 0.1 1>&2
     # unset pipestatus_[0-9]+ variables
     __pipestatus_j=1
-    while eval "\${pipestatus_$__pipestatus_j+:} false"; do
-        unset pipestatus_$__pipestatus_j
+#    echo 0.11 1>&2
+    while eval [ "\$pipestatus_$__pipestatus_j" ]; do
+#	echo 0.15 1>&2
+        unset pipestatus_$__pipestatus_j || true
+#	echo 0.16 1>&2
         __pipestatus_j=$(($__pipestatus_j+1))
+#	echo 0.17 1>&2
     done
+#    echo 0.2 1>&2
+    return 0
 }
 
 # run pipe and set pipestatus_1, pipestatus_2, ... and pipesize variables
@@ -30,6 +37,7 @@ pipestatus_clear_all_vars (){
 # Always return zero exit status
 runpipe_base (){
     #
+#    echo 0 1>&2
     pipestatus_clear_all_vars
 
     # whole command
@@ -44,6 +52,7 @@ runpipe_base (){
     # counter
     __pipestatus_j=1
 
+#    echo 1 1>&2
     # generating whole command
     for __pipestatus_a; do
         if [ "_$__pipestatus_a" = '_|' ]; then
@@ -61,6 +70,7 @@ runpipe_base (){
     __pipestatus_com="$__pipestatus_com $__pipestatus_l 3>&- 1>&4 4>&-"'
    echo "pipestatus_'"$__pipestatus_j"'=$?"'
 
+#    echo 2 1>&2
     # $<NUM> --> $__pipestatus_arg<NUM> for shells that supports $1..$9 only
     __pipestatus_k=1
     while [ $# -ne 0 ]; do
@@ -70,9 +80,11 @@ runpipe_base (){
     done
 
     # '|| true' - trick for 'set -e'
+#    echo 3 1>&2
     exec 4>&1 
-    eval "$(exec 3>&1; eval "$__pipestatus_com")" || true
+    eval "$(exec 3>&1; eval "$__pipestatus_com" || true; )"
     exec 4>&- 
+#    echo 4 1>&2
 
     #
     pipesize=$__pipestatus_j
@@ -83,7 +95,7 @@ runpipe_base (){
 # returns zero exit status if ALL progs in pipe return zero
 check_status0 (){
     __pipestatus_j=1
-    while eval "\${pipestatus_$__pipestatus_j+:} false"; do
+    while [ "$__pipestatus_j" -le "$pipesize" ]; do
 	eval "[ \$pipestatus_$__pipestatus_j -eq 0 ]" || return 1
 	__pipestatus_j=$(($__pipestatus_j+1))
     done
@@ -109,6 +121,9 @@ check_status_re (){
 	__pipestatus_j=$(($__pipestatus_j+1))
     done
 
+#    echo '__pipestatus_re='$__pipestatus_re 1>&2
+#    echo '__pipestatus_ps='$__pipestatus_ps 1>&2
+
     # trick for set -e
     if echo "$__pipestatus_ps" | egrep "^ $__pipestatus_re"'$' > /dev/null; then
 	__pipestatus_ret=$?
@@ -131,11 +146,11 @@ check_status_re (){
 # example: runpipe_re '0 . 0' prog1 '|' prog2 '|' prog3
 # . means "any status"
 runpipe_re (){
-    __pipestatus_re=$1
+    __pipestatus_re="$1"
     shift
 
     runpipe_base "$@"
-    check_status_re $__pipestatus_re
+    check_status_re "$__pipestatus_re"
 }
 
 # return exit code of the last program in pipe
