@@ -163,3 +163,4 @@ runpipe_base ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
              ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
              ret_1_5 '|' ret_1_1 '|'   ret1
 check_status_re '5 1 0 1 0 0 5 1 0 5 1 1'
+test "$pipestatus_all" = '5 1 0 1 0 0 5 1 0 5 1 1'; assert "test55.1"
