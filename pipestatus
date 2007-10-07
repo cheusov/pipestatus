@@ -57,8 +57,12 @@ runpipe_base (){
     # generating whole command
     for __pipestatus_a; do
         if [ "_$__pipestatus_a" = '_|' ]; then
-            __pipestatus_com="$__pipestatus_com { $__pipestatus_l 3>&-"'
-   echo "pipestatus_'$__pipestatus_j'=$?" 1>&3
+            __pipestatus_com="$__pipestatus_com {
+   if $__pipestatus_l 3>&-"'; then
+      echo "pipestatus_'$__pipestatus_j'=0" 1>&3
+   else
+      echo "pipestatus_'$__pipestatus_j'=$?" 1>&3
+   fi
 } 4>&- |
 '
             __pipestatus_j=$(($__pipestatus_j+1))
@@ -68,8 +72,11 @@ runpipe_base (){
         fi
         __pipestatus_k=$(($__pipestatus_k+1))
     done
-    __pipestatus_com="$__pipestatus_com $__pipestatus_l 3>&- 1>&4 4>&-"'
-   echo "pipestatus_'"$__pipestatus_j"'=$?"'
+    __pipestatus_com="if $__pipestatus_com $__pipestatus_l 3>&- 1>&4 4>&-"'; then
+      echo "pipestatus_'"$__pipestatus_j"'=0"
+   else
+      echo "pipestatus_'"$__pipestatus_j"'=$?"
+   fi'
 
 #    echo 2 1>&2
     # $<NUM> --> $__pipestatus_arg<NUM> for shells that supports $1..$9 only
