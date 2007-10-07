@@ -3,10 +3,18 @@
 . ./pipestatus
 
 assert (){
-    if test $? -eq 0; then
+    ex_status=$?
+    if test "$ex_status" -eq 0; then
 	return 0
     else
 	echo "Faild $@" 1>&2
+	echo "\$?=$ex_status" 1>&2
+	echo "pipesize=$pipesize" 1>&2
+	i=1
+	while test "$i" -le "$pipesize"; do
+	    eval echo "pipestatus_$i=\$pipestatus_$i" 1>&2
+	    i=$(($i+1))
+	done
 	exit 5
     fi
 }
@@ -64,25 +72,32 @@ test "$pipestatus_2" -eq '0'; assert "test19"
 test "$pipesize" -eq '2'; assert "test20"
 
 # runpipe_re
-runpipe_re '1 7 [571]' ret1 '|' ret7  '|' ret5
-test $? -ne 0; assert "test21"
+runpipe_re '1 7 [571]' ret1 '|' ret7 '|' ret5
+test $? -eq 0; assert "test21"
 test "$pipestatus_1" -eq '1'; assert "test22"
 test "$pipestatus_2" -eq '7'; assert "test23"
 test "$pipestatus_3" -eq '5'; assert "test24"
 test "$pipesize" -eq '3'; assert "test25"
 
-runpipe_re '1 7 [571]' ret1 '|' ret7  '|' ret5
-test $? -ne 0; assert "test26"
+runpipe_re '1 7 [571]' ret1 '|' ret7 '|' ret5
+test $? -eq 0; assert "test26"
 test "$pipestatus_1" -eq '1'; assert "test27"
 test "$pipestatus_2" -eq '7'; assert "test28"
 test "$pipestatus_3" -eq '5'; assert "test29"
 test "$pipesize" -eq '3'; assert "test30"
 
-runpipe_re '. . [51]' ret1 '|' ret7  '|' ret5
-test $? -ne 0; assert "test31"
+runpipe_re '1 [71] .' ret1 '|' ret7 '|' ret5
+test $? -eq 0; assert "test31"
 test "$pipestatus_1" -eq '1'; assert "test32"
 test "$pipestatus_2" -eq '7'; assert "test33"
 test "$pipestatus_3" -eq '5'; assert "test34"
+test "$pipesize" -eq '3'; assert "test35"
+
+runpipe_re '1 [71] 5' ret1 '|' ret7 '|' true
+test $? -ne 0; assert "test31"
+test "$pipestatus_1" -eq '1'; assert "test32"
+test "$pipestatus_2" -eq '7'; assert "test33"
+test "$pipestatus_3" -eq '0'; assert "test34"
 test "$pipesize" -eq '3'; assert "test35"
 
 #  reentrant?
@@ -135,5 +150,5 @@ set -e
 runpipe_base ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
              ret_1_1 '|' ret_5_7_0 '|' ret_5_7_0 '|' \
              ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
-             ret_1_5 '|' ret_1_1 '|'   ret_5_7_0
-check_status_re '5 1 0 1 0 0 5 1 0 5 1 0'
+             ret_1_5 '|' ret_1_1 '|'   ret1
+check_status_re '5 1 0 1 0 0 5 1 0 5 1 1'
