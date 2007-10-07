@@ -37,77 +37,77 @@ ret7 (){
 
 # runpipe
 runpipe ret7 '|' ret5 '|' ret1 '|' ret0
-test $? -eq 0; assert "test1"
-test "$pipestatus_1" -eq '7'; assert "test2"
-test "$pipestatus_2" -eq '5'; assert "test3"
-test "$pipestatus_3" -eq '1'; assert "test4"
-test "$pipestatus_4" -eq '0'; assert "test5"
-test "$pipestatus_all" = '7 5 1 0'; assert "test5.1"
-test "$pipesize" -eq '4'; assert "test6"
+test $? -eq 0; assert "test1.?"
+test "$pipestatus_1" -eq '7'; assert "test1.1"
+test "$pipestatus_2" -eq '5'; assert "test1.2"
+test "$pipestatus_3" -eq '1'; assert "test1.3"
+test "$pipestatus_4" -eq '0'; assert "test1.4"
+test "$pipestatus_all" = '7 5 1 0'; assert "test1.a"
+test "$pipesize" -eq '4'; assert "test1.s"
 
 runpipe ret0 '|' ret0
-test $? -eq 0; assert "test7"
-test "$pipestatus_1" -eq '0'; assert "test8"
-test "$pipestatus_2" -eq '0'; assert "test9"
-test "$pipestatus_all" = '0 0'; assert "test9.1"
-test "$pipesize" -eq '2'; assert "test10"
+test $? -eq 0; assert "test2.?"
+test "$pipestatus_1" -eq '0'; assert "test2.1"
+test "$pipestatus_2" -eq '0'; assert "test2.2"
+test "$pipestatus_all" = '0 0'; assert "test2.a"
+test "$pipesize" -eq '2'; assert "test2.s"
 
 # runpipe0
 pipestatus_clear_all_vars
 runpipe0 ret1 '|' ret7  '|' ret5
-test $? -ne 0; assert "test11"
-test "$pipestatus_1" -eq '1'; assert "test12"
-test "$pipestatus_2" -eq '7'; assert "test13"
-test "$pipestatus_3" -eq '5'; assert "test14"
-test "$pipestatus_all" = '1 7 5'; assert "test14.1"
-test "$pipesize" -eq '3'; assert "test12"
+test $? -ne 0; assert "test3.?"
+test "$pipestatus_1" -eq '1'; assert "test3.1"
+test "$pipestatus_2" -eq '7'; assert "test3.2"
+test "$pipestatus_3" -eq '5'; assert "test3.3"
+test "$pipestatus_all" = '1 7 5'; assert "test3.a"
+test "$pipesize" -eq '3'; assert "test3.s"
 
 runpipe0 ret7  '|' ret0
-test $? -ne 0; assert "test13"
-test "$pipestatus_1" -eq '7'; assert "test14"
-test "$pipestatus_2" -eq '0'; assert "test15"
-test "$pipestatus_all" = '7 0'; assert "test15.1"
-test "$pipesize" -eq '2'; assert "test16"
+test $? -ne 0; assert "test4.?"
+test "$pipestatus_1" -eq '7'; assert "test4.1"
+test "$pipestatus_2" -eq '0'; assert "test4.2"
+test "$pipestatus_all" = '7 0'; assert "test4.a"
+test "$pipesize" -eq '2'; assert "test4.s"
 
 runpipe0 ret0 '|' ret0
-test $? -eq 0; assert "test17"
-test "$pipestatus_1" -eq '0'; assert "test18"
-test "$pipestatus_2" -eq '0'; assert "test19"
-test "$pipestatus_all" = '0 0'; assert "test19.1"
-test "$pipesize" -eq '2'; assert "test20"
+test $? -eq 0; assert "test5.?"
+test "$pipestatus_1" -eq '0'; assert "test5.1"
+test "$pipestatus_2" -eq '0'; assert "test5.2"
+test "$pipestatus_all" = '0 0'; assert "test5.a"
+test "$pipesize" -eq '2'; assert "test5.s"
 
 # runpipe_re
 runpipe_re '1 7 [571]' ret1 '|' ret7 '|' ret5
-test $? -eq 0; assert "test21"
-test "$pipestatus_1" -eq '1'; assert "test22"
-test "$pipestatus_2" -eq '7'; assert "test23"
-test "$pipestatus_3" -eq '5'; assert "test24"
-test "$pipestatus_all" = '1 7 5'; assert "test24.1"
-test "$pipesize" -eq '3'; assert "test25"
+test $? -eq 0; assert "test6.?"
+test "$pipestatus_1" -eq '1'; assert "test6.1"
+test "$pipestatus_2" -eq '7'; assert "test6.2"
+test "$pipestatus_3" -eq '5'; assert "test6.3"
+test "$pipestatus_all" = '1 7 5'; assert "test6.a"
+test "$pipesize" -eq '3'; assert "test6.s"
 
 runpipe_re '1 7 [571]' ret1 '|' ret7 '|' ret5
-test $? -eq 0; assert "test26"
-test "$pipestatus_1" -eq '1'; assert "test27"
-test "$pipestatus_2" -eq '7'; assert "test28"
-test "$pipestatus_3" -eq '5'; assert "test29"
-test "$pipestatus_all" = '1 7 5'; assert "test29.1"
-test "$pipesize" -eq '3'; assert "test30"
+test $? -eq 0; assert "test7.?"
+test "$pipestatus_1" -eq '1'; assert "test7.1"
+test "$pipestatus_2" -eq '7'; assert "test7.2"
+test "$pipestatus_3" -eq '5'; assert "test7.3"
+test "$pipestatus_all" = '1 7 5'; assert "test7.a"
+test "$pipesize" -eq '3'; assert "test7.s"
 
 runpipe_re '1 [71] .' ret1 '|' ret7 '|' ret5
-test $? -eq 0; assert "test31"
-test "$pipestatus_1" -eq '1'; assert "test32"
-test "$pipestatus_2" -eq '7'; assert "test33"
-test "$pipestatus_3" -eq '5'; assert "test34"
-test "$pipestatus_all" = '1 7 5'; assert "test34.1"
-test "$pipesize" -eq '3'; assert "test35"
+test $? -eq 0; assert "test8.?"
+test "$pipestatus_1" -eq '1'; assert "test8.1"
+test "$pipestatus_2" -eq '7'; assert "test8.2"
+test "$pipestatus_3" -eq '5'; assert "test8.3"
+test "$pipestatus_all" = '1 7 5'; assert "test8.a"
+test "$pipesize" -eq '3'; assert "test8.s"
 
 runpipe_re '1 [71] 5' ret1 '|' ret7 '|' true
-test $? -ne 0; assert "test31"
-test "$pipestatus_1" -eq '1'; assert "test32"
-test "$pipestatus_2" -eq '7'; assert "test33"
-test "$pipestatus_3" -eq '0'; assert "test34"
-test "$pipestatus_all" = '1 7 0'; assert "test34.1"
-test "$pipesize" -eq '3'; assert "test35"
+test $? -ne 0; assert "test9.?"
+test "$pipestatus_1" -eq '1'; assert "test9.1"
+test "$pipestatus_2" -eq '7'; assert "test9.2"
+test "$pipestatus_3" -eq '0'; assert "test9.3"
+test "$pipestatus_all" = '1 7 0'; assert "test9.a"
+test "$pipesize" -eq '3'; assert "test9.s"
 
 #  reentrant?
 ret10 (){
@@ -127,33 +127,33 @@ ret_5_7_0 () {
 }
 
 runpipe 'ret_1_5' '|' 'ret_1_1' '|' 'ret_5_7_0'
-test $? -eq 0; assert "test36"
-test "$pipestatus_1" -eq '5'; assert "test37"
-test "$pipestatus_2" -eq '1'; assert "test38"
-test "$pipestatus_3" -eq '0'; assert "test39"
-test "$pipestatus_all" = '5 1 0'; assert "test39.1"
-test "$pipesize" -eq '3'; assert "test41"
+test $? -eq 0; assert "test10.?"
+test "$pipestatus_1" -eq '5'; assert "test10.1"
+test "$pipestatus_2" -eq '1'; assert "test10.2"
+test "$pipestatus_3" -eq '0'; assert "test10.3"
+test "$pipestatus_all" = '5 1 0'; assert "test10.a"
+test "$pipesize" -eq '3'; assert "test10.s"
 
 # loong pipe (old shells with $1..$9 only)
 runpipe0 ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
          ret_1_1 '|' ret_5_7_0 '|' ret_5_7_0 '|' \
          ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
          ret_1_5 '|' ret_1_1 '|'   ret_5_7_0
-test $? -eq 1; assert "test42"
-test "$pipestatus_1"  -eq '5'; assert "test43"
-test "$pipestatus_2"  -eq '1'; assert "test44"
-test "$pipestatus_3"  -eq '0'; assert "test45"
-test "$pipestatus_4"  -eq '1'; assert "test46"
-test "$pipestatus_5"  -eq '0'; assert "test47"
-test "$pipestatus_6"  -eq '0'; assert "test48"
-test "$pipestatus_7"  -eq '5'; assert "test49"
-test "$pipestatus_8"  -eq '1'; assert "test50"
-test "$pipestatus_9"  -eq '0'; assert "test51"
-test "$pipestatus_10" -eq '5'; assert "test52"
-test "$pipestatus_11" -eq '1'; assert "test53"
-test "$pipestatus_12" -eq '0'; assert "test54"
-test "$pipestatus_all" = '5 1 0 1 0 0 5 1 0 5 1 0'; assert "test54.1"
-test "$pipesize" -eq '12'; assert "test55"
+test $? -eq 1; assert "test11.?"
+test "$pipestatus_1"  -eq '5'; assert "test11.1"
+test "$pipestatus_2"  -eq '1'; assert "test11.2"
+test "$pipestatus_3"  -eq '0'; assert "test11.3"
+test "$pipestatus_4"  -eq '1'; assert "test11.4"
+test "$pipestatus_5"  -eq '0'; assert "test11.5"
+test "$pipestatus_6"  -eq '0'; assert "test11.6"
+test "$pipestatus_7"  -eq '5'; assert "test11.7"
+test "$pipestatus_8"  -eq '1'; assert "test11.8"
+test "$pipestatus_9"  -eq '0'; assert "test11.9"
+test "$pipestatus_10" -eq '5'; assert "test11.10"
+test "$pipestatus_11" -eq '1'; assert "test11.11"
+test "$pipestatus_12" -eq '0'; assert "test11.12"
+test "$pipestatus_all" = '5 1 0 1 0 0 5 1 0 5 1 0'; assert "test11.a"
+test "$pipesize" -eq '12'; assert "test11.s"
 
 # test for checkpipe function and 'set -e'
 set -e
@@ -163,4 +163,4 @@ runpipe_base ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
              ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
              ret_1_5 '|' ret_1_1 '|'   ret1
 check_status_re '5 1 0 1 0 0 5 1 0 5 1 1'
-test "$pipestatus_all" = '5 1 0 1 0 0 5 1 0 5 1 1'; assert "test55.1"
+test "$pipestatus_all" = '5 1 0 1 0 0 5 1 0 5 1 1'; assert "test12.a"
