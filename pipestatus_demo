@@ -19,6 +19,7 @@ ret55 () {
 showvars (){
     echo '$?'=$?
     echo pipesize=$pipesize
+    echo pipestatus_all=$pipestatus_all
     i=1
     while test $i -le $pipesize; do
 	eval echo 'pipestatus_$i=$pipestatus_'$i
