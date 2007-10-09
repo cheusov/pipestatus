@@ -9,28 +9,27 @@ Home page. http://mova.org/~cheusov/pub/pipestatus/
 
                         MOTIVATION
 
-While programming in shell we often run pipes like this
+When we program in shell we often run pipes like this
 
     prog1 args1 | prog2 args2 | ... | progN argsN
 
-Unfortunately POSIX says that exit status of the entire
-pipe is the exit status of LAST program in it, i.e.
-progN in our example. That is, exit status of all other
-programs in pipe is silently ignored.
-IMHO this is VEEEERY bad.
+POSIX says that exit status of pipe is the exit status of LAST program
+in it, i.e.  progN in our example. That is, exit status of all other
+programs in pipe is silently ignored.  But in many situations exit
+status of all programs in pipe should be checked to make program
+robust. Some shells like BASH and ZSH have special extensions for
+doing this but POSIX shell unfortunately doesn't provide an EASY way
+for doing this.
 
-Solution - to check exit status of any/all programs in pipe
-when it is necessary.
-
-And this is exactly what 'pipetatus' actually does.
-And this is why I packaged and publish this code.
+In short, this is why I wrote this peace of code, packaged and publish
+this code.
 
 ============================================================
 
                          INSTALL
 
 There is nothing to be built in 'pipestatus'.
-Just copy pipestatus to the place PATH variable points to
+Just copy 'pipestatus' file to the place PATH variable points to
 You can also run ./pipestatus_demo for demo version and
 sample of usage. ./selftest is also a good example.
 
