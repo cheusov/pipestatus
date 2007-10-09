@@ -1,3 +1,26 @@
+0.4.0
+    - FIXED: 'check_status_re' and therefore 'runpipe_re'
+
+    - ADDED: support for shells that do not support $10, $11 etc.
+      That is now loooong pipe are supported in such shells.
+
+    - FIXES: fixes for 'set -e' mode including those specific to
+      Korn shell and its derivatives
+
+    - ADDED: new variable 'pipestatus_all' is also
+      set runpipe* function. It keeps exit statuses of
+      all programs separated by space.
+
+    - ADDED: script for testing pipestatus (selftest)
+      and new Makefile target 'test'.
+      Now you can test 'pipstatus' on with system.
+
+    - documentation updates
+
+    - grep is used instead of egrep by 'check_status_re'
+
+    - function 'pipestatus_clear_all_vars' removed
+
 0.3.0
     better and more complete documentation in README file
 
