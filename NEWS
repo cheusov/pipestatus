@@ -2,7 +2,7 @@
     - FIXED: 'check_status_re' and therefore 'runpipe_re'
 
     - ADDED: support for shells that do not support $10, $11 etc.
-      That is now loooong pipe are supported in such shells.
+      That is now loooong pipes are supported in such shells.
 
     - FIXES: fixes for 'set -e' mode including those specific to
       Korn shell and its derivatives
