@@ -33,11 +33,29 @@ Just copy 'pipestatus' file to the place PATH variable points to
 You can also run ./pipestatus_demo for demo version and
 sample of usage. ./selftest is also a good example.
 
-If 
+I tested pipestatus with the following shells.
+
+ - NetBSD-4 RC2 /bin/sh,
+ - NetBSD-4 RC2 /bin/ksh
+ - bash 3.2.9
+ - bash 2.05b
+ - zsh 4.2.6
+ - zsh 4.2.6
+ - mksh R28
+ - pdksh 5.2.14
+ - Debian dash 0.5.3-7
+ - Solaris' /usr/xpg4/bin/sh (5.10 Generic_118833-36)
+
+On all of them pipestatus seems to work fine.
+'set -e' mode was also tested.
+
+Solaris' /bin/sh (5.10 Generic_118833-36) is not supported (yet?).
+
+If the following command 
 
     make test
 
-command fails on you system, please let me now.
+fails on your system, please let me now.
 
 ============================================================
 
@@ -88,7 +106,7 @@ Usage for check_statusX functions:
    check_status_re status_re
 
 They set $? according to pipestatus_1, pipestatus_2 etc. variables
-(probably set by runpipeX functions)
+(they may be set by runpipe* functions)
 
 ============================================================
 
