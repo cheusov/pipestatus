@@ -8,12 +8,15 @@
       Korn shell and its derivatives
 
     - ADDED: new variable 'pipestatus_all' is also
-      set runpipe* function. It keeps exit statuses of
+      set by runpipe* functions. It keeps exit statuses of
       all programs separated by space.
 
     - ADDED: script for testing pipestatus (selftest)
       and new Makefile target 'test'.
-      Now you can test 'pipstatus' on with system.
+      Now you can test 'pipstatus' on with system by running
+      '/your/favourite/shell selftest'
+      or
+      'make test' (/bin/sh is used in this case)
 
     - documentation updates
 
