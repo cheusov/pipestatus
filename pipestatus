@@ -16,6 +16,9 @@
 # Example: runpipe_base prog1 arg11 arg12 '|' prog2 arg21 arg22 '|' prog3
 # Always return zero exit status
 runpipe_base (){
+    #
+    pipesize=0
+
     # whole command
     __pipestatus_com=
 
