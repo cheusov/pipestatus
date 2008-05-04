@@ -1,3 +1,14 @@
+0.5.0
+    - 'check_status_re' and therefore 'runpipe_re' use 'grep -E'
+      instead of 'grep' in order to simplify regexp that
+      contains >=2 digit exit statuses.
+
+      NOTE: Formally speaking this breaks backward compatibility.
+
+    - If PIPESTATUS_VERBOSE variable is set to non-empty string, then
+      check_status0 and check_status_re functions print an error
+      message to stderr.
+
 0.4.0
     - FIXED: 'check_status_re' and therefore 'runpipe_re'
 

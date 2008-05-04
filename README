@@ -108,6 +108,10 @@ Usage for check_statusX functions:
 They set $? according to pipestatus_1, pipestatus_2 etc. variables
 (they may be set by runpipe* functions)
 
+If PIPESTATUS_VERBOSE variable is set to non-empty string, then
+check_status0 and check_status_re functions print an error message to
+stderr.
+
 ============================================================
 
                        AUTHORS/FEEDBACK
