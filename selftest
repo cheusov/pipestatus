@@ -2,6 +2,10 @@
 
 . ./pipestatus
 
+tmp_fn=/tmp/pipestatus_test.$$
+
+trap 'rm -f $tmp_fn' 0 1 2 3 15
+
 assert (){
     ex_status=$?
     if test "$ex_status" -eq 0; then
@@ -163,3 +167,17 @@ runpipe_base ret_1_5 '|' ret_1_1 '|'   ret_5_7_0 '|' \
              ret_1_5 '|' ret_1_1 '|'   ret1
 check_status_re '5 1 0 1 0 0 5 1 0 5 1 1'
 test "$pipestatus_all" = '5 1 0 1 0 0 5 1 0 5 1 1'; assert "test12.a"
+
+# tests for complex command between '|'
+runpipe_base \
+    awk 'BEGIN {print "+*<>(){}!&|"; exit 41}'  '|' \
+    sed 's,[+*<>()],?,g' '|' \
+    awk '{print $0 " --- " $0; exit 43}' '|' \
+    awk "{print \"''\" \$0 \"'''\"; exit 44}" > "$tmp_fn"
+test "$pipestatus_all" = '41 0 43 44'; assert "test13.1"
+test "$pipestatus_1" = '41'; assert "test13.2"
+test "$pipestatus_2" = '0'; assert "test13.3"
+test "$pipestatus_3" = '43'; assert "test13.4"
+test "$pipestatus_4" = '44'; assert "test13.4"
+test "$pipesize" = '4'; assert "test13.5"
+test "`cat $tmp_fn`" = "''??????{}!&| --- ??????{}!&|'''"; assert "test13.6"

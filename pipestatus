@@ -13,6 +13,11 @@
 #
 
 # 
+__shquote (){
+    __cmd=`printf '%s\n' "$1" | sed "s|'|'\\\\\''|g"`
+    printf "%s\n" "'$__cmd'"
+}
+
 __pipestatus_err_msg (){
     if test "$PIPESTATUS_VERBOSE"; then
 	echo "Pipe failed, pipestatus_all='$pipestatus_all'" 1>&2
@@ -52,7 +57,7 @@ runpipe_base (){
             __pipestatus_j=$(($__pipestatus_j+1))
 	    __pipestatus_l=
         else
-            __pipestatus_l="$__pipestatus_l \"\$__pipestatus_arg$__pipestatus_k\""
+            __pipestatus_l="$__pipestatus_l `__shquote \"$__pipestatus_a\"`"
         fi
         __pipestatus_k=$(($__pipestatus_k+1))
     done
@@ -62,13 +67,8 @@ runpipe_base (){
       echo "pipestatus_'"$__pipestatus_j"'=$?"
    fi'
 
-    # $<NUM> --> $__pipestatus_arg<NUM> for shells that supports $1..$9 only
-    __pipestatus_k=1
-    while [ $# -ne 0 ]; do
-	eval "__pipestatus_arg$__pipestatus_k=\"$1\""
-	__pipestatus_k=$(($__pipestatus_k+1))
-	shift
-    done
+    #
+#    echo "$__pipestatus_com"
 
     # '|| true' - trick for 'set -e'
     exec 4>&1 
