@@ -44,7 +44,7 @@ runpipe_base (){
     __pipestatus_j=1
 
     # generating whole command
-    for __pipestatus_a; do
+    for __pipestatus_a in "$@"; do
         if [ "_$__pipestatus_a" = '_|' ]; then
             __pipestatus_com="$__pipestatus_com {
    if $__pipestatus_l 3>&-"'; then
@@ -54,12 +54,12 @@ runpipe_base (){
    fi
 } 4>&- |
 '
-            __pipestatus_j=$(($__pipestatus_j+1))
+            __pipestatus_j=`expr $__pipestatus_j + 1`
 	    __pipestatus_l=
         else
             __pipestatus_l="$__pipestatus_l `__shquote \"$__pipestatus_a\"`"
         fi
-        __pipestatus_k=$(($__pipestatus_k+1))
+        __pipestatus_k=`expr $__pipestatus_k + 1`
     done
     __pipestatus_com="if $__pipestatus_com $__pipestatus_l 3>&- 1>&4 4>&-"'; then
       echo "pipestatus_'"$__pipestatus_j"'=0"
@@ -72,7 +72,7 @@ runpipe_base (){
 
     # '|| true' - trick for 'set -e'
     exec 4>&1 
-    eval "$(exec 3>&1; eval "$__pipestatus_com" || true; )"
+    eval `exec 3>&1; eval "$__pipestatus_com" || true`
     exec 4>&- 
 
     #
@@ -83,7 +83,7 @@ runpipe_base (){
     pipestatus_all=$pipestatus_1
     while [ "$__pipestatus_j" -le "$pipesize" 2>/dev/null ]; do
 	eval "pipestatus_all=\"$pipestatus_all \$pipestatus_$__pipestatus_j\""
-        __pipestatus_j=$(($__pipestatus_j+1))
+        __pipestatus_j=`expr $__pipestatus_j + 1`
     done
 
     return 0
@@ -97,7 +97,7 @@ check_status0 (){
 	    __pipestatus_err_msg
 	    return 1
 	}
-	__pipestatus_j=$(($__pipestatus_j+1))
+	__pipestatus_j=`expr $__pipestatus_j + 1`
     done
 
     return 0
@@ -118,7 +118,7 @@ check_status_re (){
     __pipestatus_ps=
     while [ "$__pipestatus_j" -le "$pipesize" ]; do
 	eval '__pipestatus_ps="$__pipestatus_ps ${pipestatus_'$__pipestatus_j'}"'
-	__pipestatus_j=$(($__pipestatus_j+1))
+	__pipestatus_j=`expr $__pipestatus_j + 1`
     done
 
     # trick for set -e

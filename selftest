@@ -17,7 +17,7 @@ assert (){
 	i=1
 	while test "$i" -le "$pipesize"; do
 	    eval echo "pipestatus_$i=\$pipestatus_$i" 1>&2
-	    i=$(($i+1))
+	    i=`expr $i + 1`
 	done
 	exit 5
     fi
