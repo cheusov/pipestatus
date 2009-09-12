@@ -40,6 +40,7 @@ I tested pipestatus with the following shells.
 
  - NetBSD-5 /bin/sh,
  - NetBSD-5 /bin/ksh
+ - FreeBSD-6.2 /bin/sh
  - bash 3.2.9
  - bash 2.05b
  - zsh 4.2.6
