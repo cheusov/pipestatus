@@ -3,7 +3,10 @@
 pipestatus - source file for POSIX shell that allows
 to obtain an exit status of every program in a pipe.
 
-Home page. http://mova.org/~cheusov/pub/pipestatus/
+Home page:
+   http://sourceforge.net/projects/pipestatus/
+   http://freshmeat.net/projects/pipestatus/
+   http://mova.org/~cheusov/pub/pipestatus/
 
 ============================================================
 
@@ -35,8 +38,8 @@ sample of usage. ./selftest is also a good example.
 
 I tested pipestatus with the following shells.
 
- - NetBSD-4 RC2 /bin/sh,
- - NetBSD-4 RC2 /bin/ksh
+ - NetBSD-5 /bin/sh,
+ - NetBSD-5 /bin/ksh
  - bash 3.2.9
  - bash 2.05b
  - zsh 4.2.6
@@ -44,12 +47,12 @@ I tested pipestatus with the following shells.
  - mksh R28
  - pdksh 5.2.14
  - Debian dash 0.5.3-7
- - Solaris' /usr/xpg4/bin/sh (5.10 Generic_118833-36)
+ - Solaris-10 /usr/xpg4/bin/sh (5.10 Generic_118833-36)
+ - heirloom sh (http://sf.net/projects/heirloom)
+ - Solaris /bin/sh (5.10 Generic_118833-36)
 
 On all of them pipestatus seems to work fine.
 'set -e' mode was also tested.
-
-Solaris' /bin/sh (5.10 Generic_118833-36) is not supported (yet?).
 
 If the following command 
 
