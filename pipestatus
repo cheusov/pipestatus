@@ -9,7 +9,7 @@
 # Set of shell functions for running pipe and checking
 # exit status of ALL programs, not only last one.
 #
-# Version 0.5.0
+# Version 0.6.0
 #
 
 # 
