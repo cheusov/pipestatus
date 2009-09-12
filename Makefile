@@ -1,4 +1,4 @@
-SH=/bin/sh
+SH?=/bin/sh
 
 all:
 	@echo Nothing to build
@@ -39,4 +39,21 @@ ChangeLog:
 
 .PHONY: test
 test:
-	$(SH) ./selftest
+	@set -e; $(SH) ./selftest; echo succeeded
+
+SHELLS=/bin/sh /bin/ksh /bin/bash /bin/dash /bin/zsh /bin/mksh \
+	/usr/bin/sh /usr/bin/ksh /usr/bin/bash \
+	/usr/bin/dash /usr/bin/zsh /usr/bin/mksh \
+	/usr/pkg/bin/ksh /usr/pkg/bin/bash /usr/pkg/bin/dash \
+	/usr/bin/zsh /usr/bin/mksh \
+	/usr/pkg/heirloom/bin/sh
+
+.PHONY: test_all
+test_all:
+	@set -e; \
+	for sh in ${SHELLS}; do \
+		if test -x $$sh; then \
+			printf " ---------------\nSH=%s\n" $$sh; \
+			env SH=$$sh $(MAKE) test; \
+		fi; \
+	done
