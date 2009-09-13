@@ -8,7 +8,7 @@
            awk 'BEGIN {print "+*<>(){}!&|"; exit 41}'  '|' \
            sed 's,[+*<>()],?,g' '|' \
            awk '{print $0 " --- " $0; exit 43}' '|' \
-           awk "{print \"''\" \$0 \"'''\"; exit 44}" > "$tmp_fn"
+           awk "{print \"''\" \$0 \"'''\"; exit 44}"
         echo "$pipestatus_all" # '41 0 43 44'
         echo "$pipestatus_1"   # '41'
         echo "$pipestatus_2"   # '0'
