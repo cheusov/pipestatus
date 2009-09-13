@@ -4,6 +4,7 @@
       As a result all these symbols are allowed in commands.
       For example,
 
+        # the following command outputs ''??????{}!&| --- ??????{}!&|'''
         runpipe_base \
            awk 'BEGIN {print "+*<>(){}!&|"; exit 41}'  '|' \
            sed 's,[+*<>()],?,g' '|' \
