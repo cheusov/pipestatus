@@ -1,3 +1,30 @@
+0.6.0 by Aleksey Cheusov Sun, 13 Sep 2009 10:00:37 +0300
+
+    - Symbols "'`*\?&|; etc. are correctly escaped before eval'ed.
+      As a result all these symbols are allowed in commands.
+      For example,
+
+        runpipe_base \
+           awk 'BEGIN {print "+*<>(){}!&|"; exit 41}'  '|' \
+           sed 's,[+*<>()],?,g' '|' \
+           awk '{print $0 " --- " $0; exit 43}' '|' \
+           awk "{print \"''\" \$0 \"'''\"; exit 44}" > "$tmp_fn"
+        echo "$pipestatus_all" # '41 0 43 44'
+        echo "$pipestatus_1"   # '41'
+        echo "$pipestatus_2"   # '0'
+        echo "$pipestatus_3"   # '43'
+        echo "$pipestatus_4"   # '44'
+        echo "$pipesize"       # '4'
+
+      Regresion test for this case.
+
+    - Support for shitty Solaris /bin/sh
+       $(()) is replaced with expr(1),
+       $() -- with ``,
+       for i -- with for i in "$@"
+
+    - Makefile: new target "test_all" for testing all available shells
+
 0.5.0
     - 'check_status_re' and therefore 'runpipe_re' use 'grep -E'
       instead of 'grep' in order to simplify regexp that
