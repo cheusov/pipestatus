@@ -1,3 +1,4 @@
+----------------------------------------------------------------------
 0.6.0 by Aleksey Cheusov Sun, 13 Sep 2009 10:00:37 +0300
 
     - Symbols "'`*\?&|; etc. are correctly escaped before eval'ed.
@@ -26,6 +27,7 @@
 
     - Makefile: new target "test_all" for testing all available shells
 
+----------------------------------------------------------------------
 0.5.0
     - 'check_status_re' and therefore 'runpipe_re' use 'grep -E'
       instead of 'grep' in order to simplify regexp that
@@ -37,6 +39,7 @@
       check_status0 and check_status_re functions print an error
       message to stderr.
 
+----------------------------------------------------------------------
 0.4.0
     - FIXED: 'check_status_re' and therefore 'runpipe_re'
 
@@ -63,11 +66,15 @@
 
     - function 'pipestatus_clear_all_vars' removed
 
+----------------------------------------------------------------------
 0.3.0
     better and more complete documentation in README file
 
+----------------------------------------------------------------------
 0.2.0
     redirections are used instead of temporary file
 
+----------------------------------------------------------------------
 0.1.0
     first publicly available release
+----------------------------------------------------------------------
