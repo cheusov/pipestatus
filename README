@@ -52,14 +52,14 @@ I tested pipestatus with the following shells.
  - heirloom sh (http://sf.net/projects/heirloom)
  - Solaris /bin/sh (5.10 Generic_118833-36)
 
-On all of them pipestatus seems to work fine.
+On all of them pipestatus works fine.
 'set -e' mode was also tested.
 
 If the following command 
 
-    make test
+    mkcmake test
 
-fails on your system, please let me now.
+fails on your system, please let me know.
 
 ============================================================
 
