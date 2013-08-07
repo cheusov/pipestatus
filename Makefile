@@ -14,7 +14,7 @@ SH ?= /bin/sh
 .PHONY: test
 test:
 	@printf " ---------------\nSH=%s\n" ${SH}; \
-	set -e; ${SH} ./selftest; echo succeeded
+	set -e; cd ${.CURDIR}; ${SH} ./selftest; echo succeeded
 
 NAMES ?= sh ksh bash dash zsh mksh pdksh 
 DIRS  ?= /bin /usr/bin /usr/pkg/bin /usr/local/bin
