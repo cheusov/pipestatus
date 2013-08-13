@@ -2,7 +2,7 @@
 # build system -- mk-configure
 
 FILES               =	pipestatus
-FILESDIR.pipestatus =	${BINDIR}
+FILESDIR_pipestatus =	${BINDIR}
 
 DOCFILES ?=		NEWS README
 FILES    +=		${DOCFILES}
