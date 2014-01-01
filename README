@@ -24,7 +24,7 @@ robust. Some shells like BASH and ZSH have special extensions for
 doing this but POSIX shell unfortunately doesn't provide an EASY way
 for doing this.
 
-In short, this is why I wrote this peace of code, packaged it and
+In short, this is why I wrote this piece of code, packaged it and
 make it publicly available.
 
 ============================================================
