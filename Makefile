@@ -27,10 +27,12 @@ SHELLS += ${d}/${s}
 
 .PHONY: test_all
 test_all:
-	@set -e; \
+	@set -e; cd ${.CURDIR}; \
 	for sh in ${SHELLS}; do \
 		if test -x $$sh; then \
-			$(MAKE) test SH=$$sh; \
+			printf '%s... ' "$$sh"; \
+			$$sh ./selftest; \
+			echo 'succeeded'; \
 		fi; \
 	done
 
