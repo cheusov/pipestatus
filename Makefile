@@ -16,7 +16,7 @@ test:
 	@printf " ---------------\nSH=%s\n" ${SH}; \
 	set -e; cd ${.CURDIR}; ${SH} ./selftest; echo succeeded
 
-NAMES ?= sh ksh bash dash zsh mksh pdksh 
+NAMES ?= sh ksh bash dash zsh mksh oksh pdksh 
 DIRS  ?= /bin /usr/bin /usr/pkg/bin /usr/local/bin
 
 .for s in ${NAMES}
