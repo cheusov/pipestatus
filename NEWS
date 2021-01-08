@@ -1,4 +1,15 @@
 ----------------------------------------------------------------------
+0.7.0 by Aleksey Cheusov Fri,  8 Jan 2021 22:58:23 +0300
+
+    - Simplify pipestatus source code.
+    - mk-configure is used as a build/test system.
+    - minor changes and fixes in documentation.
+    - fix regression test for non-empty MAKEOBJDIR
+    - Install pipestatus_demo to doicumentation dir.
+    - Add oksh (portable shell from OpenBSD) /usr/xpg4/bin/sh
+      on Solaris (AIX?) for testing.
+
+----------------------------------------------------------------------
 0.6.0 by Aleksey Cheusov Sun, 13 Sep 2009 10:00:37 +0300
 
     - Symbols "'`*\?&|; etc. are correctly escaped before eval'ed.
