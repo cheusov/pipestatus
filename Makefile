@@ -6,7 +6,9 @@ FILESDIR_pipestatus =	${BINDIR}
 
 DOCFILES ?=		NEWS README
 FILES    +=		${DOCFILES}
+SCRIPTS  +=		pipestatus_demo
 FILESDIR  =		${DATADIR}/doc/pipestatus
+SCRIPTSDIR=		${FILESDIR}
 
 ##########################################################
 SH ?= /bin/sh
