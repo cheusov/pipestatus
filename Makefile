@@ -18,8 +18,8 @@ test:
 	@printf " ---------------\nSH=%s\n" ${SH}; \
 	set -e; cd ${.CURDIR}; ${SH} ./selftest; echo succeeded
 
-NAMES ?= sh ksh bash dash zsh mksh pdksh 
-DIRS  ?= /bin /usr/bin /usr/pkg/bin /usr/local/bin
+NAMES ?= bash dash zsh mksh oksh pdksh ksh sh
+DIRS  ?= /usr/pkg/bin /usr/local/bin /usr/xpg4/bin /usr/bin /bin
 
 .for s in ${NAMES}
 .for d in ${DIRS}
@@ -29,10 +29,12 @@ SHELLS += ${d}/${s}
 
 .PHONY: test_all
 test_all:
-	@set -e; \
+	@set -e; cd ${.CURDIR}; \
 	for sh in ${SHELLS}; do \
 		if test -x $$sh; then \
-			$(MAKE) test SH=$$sh; \
+			printf '%s... ' "$$sh"; \
+			$$sh ./selftest; \
+			echo 'succeeded'; \
 		fi; \
 	done
 
